@@ -11,6 +11,15 @@ The below-named tar file contains all the necessary packages with the latest GCC
 
 upto_before_8.82_stripping_-11.2-rc1.tar.xz 
 
+
+# Download link .
+
+https://drive.google.com/file/d/1Z7G1QxDR_kjUPTcWG5YfwythVx0-hRyv/view?usp=sharing
+
+
+
+
+
 After extracting it as 
 
     tar -xpf $HOME/lfs-temp-tools-11.2-rc1.tar.xz

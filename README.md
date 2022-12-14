@@ -65,12 +65,12 @@ This may result in an error as not found or something in some system due to "rea
         x86_64) chown -R root:root $LFS/lib64 ;;
       esac
 This will mount or bind your current host system elements such as below.
-       mkdir -pv $LFS/{dev,proc,sys,run}
-       mount -v --bind /dev $LFS/dev
-       mount -v --bind /dev/pts $LFS/dev/pts
-       mount -vt proc proc $LFS/proc
-       mount -vt sysfs sysfs $LFS/sys
-       mount -vt tmpfs tmpfs $LFS/run
+      mkdir -pv $LFS/{dev,proc,sys,run}
+      mount -v --bind /dev $LFS/dev
+      mount -v --bind /dev/pts $LFS/dev/pts
+      mount -vt proc proc $LFS/proc
+      mount -vt sysfs sysfs $LFS/sys
+      mount -vt tmpfs tmpfs $LFS/run
 NOTE:
 It is only necessary when we get to " 10. Making the LFS System Bootable" for LFS documentation
 And only if you want to boot it using UEFI not legacy 

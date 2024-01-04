@@ -2,10 +2,9 @@
 Linux from scratch (Linux 5.19.2-lfs-11.2-rc1)
 
 
-You are recommended to go through https://www.linuxfromscratch.org/lfs/view/11.2-rc1/. By own.
+To create your custom Linux system, you are encouraged to follow the step-by-step guide available at Linux From Scratch (LFS) 11.2-rc1. If you prefer, you can begin the process from the middle stages to avoid lengthy compilation times. For this purpose, pre-compiled patches are available for the GCC 11+ and Linux 5.19.2-lfs-11.2-rc1 kernel.
 
-if you want to build from the middle as the compiling process takes so long.
- Then, here are some patches pre-compiled from where you can install the kernel as per your choice and your system architecture.
+
  
 The below-named tar file contains all the necessary packages with the latest GCC 11+, Linux 5.19.2-lfs-11.2-rc1
 
@@ -24,17 +23,14 @@ After extracting it as
 
     tar -xpf $HOME/lfs-temp-tools-11.2-rc1.tar.xz
 
-You can continue to chroot its environment, to know how to let's go through this link: https://www.linuxfromscratch.org/lfs/view/11.2-rc1/chapter07/introduction.html
+For a safer approach, it's recommended to carefully read the LFS documentation before proceeding, as an incorrect choice in disk selection might result in data loss.
 
-You are not recommended to go through the process by copy paste as mine below but analyze the Documentation for LFS then 
-It looks like this to me 
+It's advisable to use a 4GB Pendrive for convenience. Follow these steps:
           
  Warning  ...
-Users are recommended to read https://www.linuxfromscratch.org/lfs/view/development/chapter07/introduction.html first 
-before doing the below. A small problem in choosing a drive might lead to losing valuable data.
+For a safer approach, it's recommended to carefully read the LFS documentation before proceeding, as an incorrect choice in disk selection might result in data loss.
 
-For better, you can use one Pendvie around 4 GB. 
-
+It's advisable to use a 4GB Pendrive for convenience. Follow these steps:
 Open terminal in linux system 
 Accessing sudo power
 
@@ -42,29 +38,26 @@ Accessing sudo power
 
 First, run as root.Then only copy below ...
 
-See man documentation for lsblk if you don't know man lsblk , for short it displays all the disks with partition available and their mount points
+Identify your disk using | Don't Hurry if you didn't get commands , man page is always there to help . Eg: man lsblk 
 
       lsblk
-For comfort, the below is written so it's easy to identify the disk bcoz one wrong choice may be held to a crash system or loss of data.
+Once identified, mount the disk where the LFS tar was extracted, The Below is basic script to identify the right disk.
+
 
        echo " \033[34m Please identify your disk as per their space and nb of partitions used ..\n Use the disk or partition where LFS tar was        extracted."
        echo" \n\n Give your disk identification /dev/sd?? to be mounted and which contains LFS Project \n \033[37m Eg: sdb3 or sdc1 or sdd4 \033[0m "
        read a
-       
-This may result in an error as not found or something in some system due to "read a" ignore it
-
        mkdir -pv /mnt/lfs
        mount /dev/$a /mnt/lfs
        print $a
        export LFS=/mnt/lfs
        
- Only one-time commands you don't have to do this again and again when you enter to chroot environment.
- 
+To enter the chroot environment and execute commands:
+
       chown -R root:root $LFS/{usr,lib,var,etc,bin,sbin}
       case $(uname -m) in
         x86_64) chown -R root:root $LFS/lib64 ;;
       esac
-This will mount or bind your current host system elements such as below.
       mkdir -pv $LFS/{dev,proc,sys,run}
       mount -v --bind /dev $LFS/dev
       mount -v --bind /dev/pts $LFS/dev/pts
@@ -126,24 +119,25 @@ the first time wrote this command entering chroot, Every time no need to write i
     install -dv -m 1777 /tmp /var/tmp
 
 
+Please note that the steps described below are necessary only when you reach the stage "10. Making the LFS System Bootable" in the LFS documentation. These steps are specifically for setting up the boot process for UEFI-based systems, not for legacy systems. Additionally, these actions are applicable if you have a separate boot partition; the example given is 'sdc1', but your system might have a different configuration.
 
-NOTE:
-It is only necessary when we get to " 10. Making the LFS System Bootable" for LFS documentation
-And only if you want to boot it using UEFI not legacy 
-if separate/boot partition then only, mine is sdc1 but you may have any
+If you are not planning to boot your Linux system using UEFI or if you do not have a separate boot partition, these steps may not be required for your setup.
+
+For instance, to configure for UEFI boot and if you have a separate boot partition, such as 'sdc1':
 
     mount /dev/sdc1 /boot/efi
+    
+Please ensure to adapt these steps according to your system's requirements and the chosen boot configuration.
+
+These steps are crucial for setting up the boot process only if you're intending to boot your LFS system using UEFI and have a separate boot partition. Adjust the commands and mount points as per your system's specifics.
 
 
 After completion and exiting from chroot environment.
 
     logout
+After exiting chroot environment Unmount the partitions 
 
-After exiting chroot environment unmount these 
-
-/boot/efi only efi supported pc only if you have mounted above  
-
-    umount -v $LFS/boot/efi
+    umount -v $LFS/boot/efi       # Optional case as describe above
 Then,
 
     umount -v $LFS/dev/pts
@@ -152,10 +146,6 @@ Then,
     umount -v $LFS/run
     umount -v $LFS/proc
     umount -v $LFS/sys
-
-only at last during setup of grub-install 
-
-
     umount -v $LFS/home
     umount -v $LFS
     
@@ -165,17 +155,15 @@ And only if you want to boot it using UEFI not legacy
 
     umount -v $LFS/sys/firmware/efi/efivars
     
-Now start from :
-Chapter 9. System Configuration
-https://www.linuxfromscratch.org/lfs/view/11.2-rc1/chapter09/introduction.html
-If you want to go through legacy boot for your new OS.It is not hard if you follow the Documentation from there, if not then install EFI packages for LFS
-from the BLFS page as: 10.4. Using GRUB to Set Up the Boot Process, suggests
-Download all three packages available here where two of them are dependencies, you can Download optional ones also.
+If you covered above part , then 
+You can start configuring your system from Chapter 9: System Configuration onward. If you prefer legacy boot, follow the documentation from there. For UEFI boot, install the EFI packages as described in BLFS section 10.4 Using GRUB to Set Up the Boot Process.
 https://www.linuxfromscratch.org/blfs/view/svn/postlfs/grub-efi.html
 
-locate those tar files to sources of /mnt/lfs/sources
-and extract them as :
-    tar -xf <filename> suppose, grub-2.06.tar.xz,
-Then, make and install as shown in BLFS documentation.
+Download the necessary packages and extract them into /mnt/lfs/sources:
+tar -xf grub-2.06.tar.xz  # Example package name
 
-And you are good to go.
+Follow the BLFS documentation to compile and install these packages.
+
+Now, you're ready to go!
+
+
